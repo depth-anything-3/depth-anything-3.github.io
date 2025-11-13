@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depth Anything 3: Recovering the Visual Space from Any Views</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <style>
+        /* Placeholder background for missing thumbnail images */
+        .thumbnail-item img[src*="placeholder"] {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            object-fit: cover;
+        }
+
+        .thumbnail-item img {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        iframe {
+        border-radius: 0.5em;
+        width: 27.5em;
+        height: 27.5em;
+        border: none;
+        box-shadow: 0 0 1em 0em rgba(0, 0, 0, 0.15);
+        }
+        @media (max-width: 768px) {
+        iframe {
+            width: 100%;
+            height: 30em;
+        }
+        }
+
+        #architecture-img {
+        width: 90%;
+        margin: 0 auto;
+        display: block;
+        border: none;
+        border-radius: 0; /* removed border radius */
+        box-shadow: none; /* removed box shadow */
+        }
+
+    </style>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Depth Anything 3</h2>
+            </div>
+            <div class="nav-links">
+                <a href="#overview">Overview</a>
+                <a href="#abilities">Abilities</a>
+                <a href="#interactive-examples">Demo</a>
+                <a href="#analysis">Comparison</a>
+                <a href="#citation">Citation</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner 区域 -->
+    <section class="banner">
+        <div class="banner-content">
+            <div class="banner-text">
+                <h1 class="banner-title">Depth Anything 3</h1>
+                <h2 class="banner-subtitle">Recovering the Visual Space from Any Views</h2>
+                <div class="authors">
+                    <a href="https://haotongl.github.io/" target="_blank" >Haotong Lin*</a>,
+                    <a href="https://github.com/SiliChen321" target="_blank">Sili Chen*</a>,
+                    <a href="https://liewjunhao.github.io/" target="_blank">Junhao Liew*</a>,
+                    <a href="https://donydchen.github.io" target="_blank">Donny Chen*</a>,
+                    <a href="https://zhyever.github.io/" target="_blank">Zhenyu Li</a>,
+                    <a href="#" target="_blank">Guang Shi</a>,
+                    <a href="#" target="_blank">Jiashi Feng</a>,
+                    <br>
+                    <a href="https://bingykang.github.io/" target="_blank">Bingyi Kang*&dagger;</a>
+
+                    <br><br>
+                    &dagger;Proejct Lead, *Equal Contribution
+                </div>
+
+                <div class="banner-links">
+                    <a href="https://promptda.github.io/" target="_blank" class="link-btn">
+                        <i class="fas fa-globe"></i> Project Page
+                    </a>
+                    <a href="https://promptda.github.io/assets/main_paper_with_supp.pdf" target="_blank" class="link-btn">
+                        <i class="fas fa-file-pdf"></i> Paper
+                    </a>
+                    <a href="https://huggingface.co/spaces/depth-anything/PromptDA" target="_blank" class="link-btn">
+                        <i class="fab fa-huggingface"></i> 🤗 Hugging Face
+                    </a>
+                    <a href="https://github.com/depth-anything/depth-anything-v3" target="_blank" class="link-btn">
+                        <i class="fab fa-github"></i> Code
+                    </a>
+                    <a href="http://localhost:8082/html/gallery.html" target="_blank" class="link-btn">
+                        <i class="fas fa-3d-model"></i> Gallery
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 主演示视频 -->
+    <section class="main-demo">
+        <div class="container">
+            <div class="tldr-content">
+                <p>
+                    <i class="fas fa-bolt"></i> <strong>TL;DR:</strong> 
+                    <!-- Depth Anything 3 turns any visual input into superior geometry and 3DGS rendering. <br> -->
+                    Depth Anything 3 recovers the space with superior geoemtry and 3DGS rendering from any visual inputs. <br>
+                    <strong>The secret?</strong> Radical simplicity: just a single, plain transformer trained with a depth-ray representation.
+                    <!-- Depth Anything 3 recovers the visual space from arbitrary visual inputs,<br> -->
+                    <!-- delivering leading geometry (camera poses, depth maps) and 3DGS rendering quality. -->
+                </p>
+            </div>
+            <div class="demo-video-container">
+                <!-- Loading Indicator -->
+                <div class="video-loader" id="mainVideoLoader">
+                    <div class="loader-spinner"></div>
+                    <div class="loader-text">Loading video...</div>
+                    <div class="loader-progress">
+                        <div class="progress-bar" id="mainVideoProgress"></div>
+                    </div>
+                </div>
+                <!-- Main Video -->
+                <video 
+                    class="main-video lazy-video" 
+                    id="mainVideo"
+                    playsinline 
+                    muted 
+                    autoplay 
+                    loop
+                    preload="metadata"
+                    data-src="./assets/teaser_compress.mp4"
+                    poster="./assets/teaser_poster.jpg">
+                    <source data-src="./assets/teaser_compress.mp4" type="video/mp4">
+                    Your browser does not support video playback.
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- Abstract -->
+    <section id="overview" class="abstract" style="text-align: left;">
+        <div class="container">
+            <div class="abstract-content" style="text-align: left;">
+                <h3><i class="fas fa-file-alt"></i> Abstract</h3>
+                <p>We present Depth Anything 3 (DA3), a model that predicts spatially consistent geometry from an arbitrary number of visual inputs, with or without known camera poses. In pursuit of minimal modeling, DA3 yields two key insights: a single plain transformer (e.g., vanilla DINOv2 encoder) is sufficient as a backbone without architectural specialization, and a singular depth-ray prediction target obviates the need for complex multi-task learning. Through our teacher-student training paradigm, the model achieves a level of detail and generalization on par with Depth Anything 2 (DA2). We establish a new visual geometry benchmark covering camera pose estimation, any-view geometry and visual rendering. On this benchmark, DA3 sets a new state-of-the-art across all tasks, surpassing prior SOTA VGGT by an average of 35.7% in camera pose accuracy and 23.6% in geometric accuracy. Moreover, it outperforms DA2 in monocular depth estimation. All models are trained exclusively on public academic datasets.</p>
+                <img src="assets/teaser.png" alt="Performance Comparison Chart" style="width: 100%; height: auto; margin-top: 0px; border-radius: 8px;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Abilities -->
+    <section id="abilities" class="applications">
+        <div class="container">
+            <h2 class="section-title">Abilities</h2>
+            <div class="applications-carousel">
+                <div class="carousel-container">
+                    <button class="carousel-btn prev-btn" onclick="changeApplication(-1)">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="carousel-content">
+                        <div class="application-slide active">
+                            <div class="application-video">
+                                <!-- Loading Indicator -->
+                                <div class="video-loader app-video-loader">
+                                    <div class="loader-spinner"></div>
+                                    <div class="loader-text">Loading video...</div>
+                                </div>
+                                <video controls class="app-video lazy-video" preload="metadata" data-src="assets/paoku_compressed.mp4">
+                                    <source data-src="assets/paoku_compressed.mp4" type="video/mp4">
+                                    Your browser does not support video playback.
+                                </video>
+                            </div>
+                            <div class="application-info">
+                                <h3>Video Reconstruction</h3>
+                                <p>
+                                    DA3 recovers the visual space from any number of views, covering from single view to multiple views.
+                                    This demo illustrates the ability of DA3 to recover the visual space from a difficult video.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="application-slide">
+                            <div class="application-video">
+                                <!-- Loading Indicator -->
+                                <div class="video-loader app-video-loader">
+                                    <div class="loader-spinner"></div>
+                                    <div class="loader-text">Loading video...</div>
+                                </div>
+                                <video controls class="app-video lazy-video" preload="metadata" data-src="assets/slam_recon.mp4">
+                                    <source data-src="assets/slam_recon.mp4" type="video/mp4">
+                                    Your browser does not support video playback.
+                                </video>
+                            </div>
+                            <div class="application-info">
+                                <h3>SLAM for Large Scale Scenes</h3>
+                                <p>
+                                    Accurate visual geometry estimation improves SLAM performance. Quantitative results show that simply replacing VGGT in VGGT-Long with DA3 (DA3-Long) significantly reduces drift in large-scale environments, even better than COLMAP, which takes more 48 hours to complete.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="application-slide">
+                            <div class="application-video">
+                                <!-- Loading Indicator -->
+                                <div class="video-loader app-video-loader">
+                                    <div class="loader-spinner"></div>
+                                    <div class="loader-text">Loading video...</div>
+                                </div>
+                                <video controls class="app-video lazy-video" preload="metadata" data-src="assets/ff3dgs.mp4">
+                                    <source data-src="assets/ff3dgs.mp4" type="video/mp4">
+                                    Your browser does not support video playback.
+                                </video>
+                            </div>
+                            <div class="application-info">
+                                <h3>Feed-forward Gaussians Estimation</h3>
+                                <p>
+                                    By freezing the entire backbone and training a DPT head on several datasets to predict 3DGS parameters, our model achieves very strong and generalizable novel view synthesis capability.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="application-slide">
+                            <div class="application-video">
+                                <!-- Loading Indicator -->
+                                <div class="video-loader app-video-loader">
+                                    <div class="loader-spinner"></div>
+                                    <div class="loader-text">Loading video...</div>
+                                </div>
+                                <video controls class="app-video lazy-video" preload="metadata" data-src="assets/ad.mp4">
+                                    <source data-src="assets/ad.mp4" type="video/mp4">
+                                    Your browser does not support video playback.
+                                </video>
+                            </div>
+                            <div class="application-info">
+                                <h3>Autonomous Perception</h3>
+                                <p>Given several images of different viewpoints from a vehicle (even without overlap), DA3 estimates stable and fusible depth maps, enhancing autonomous vehicles' environmental understanding.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-btn next-btn" onclick="changeApplication(1)">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="carousel-indicators">
+                    <span class="indicator active" onclick="setApplication(0)"></span>
+                    <span class="indicator" onclick="setApplication(1)"></span>
+                    <span class="indicator" onclick="setApplication(2)"></span>
+                    <span class="indicator" onclick="setApplication(3)"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="interactive-examples" class="interactive-results">
+        <div class="container">
+          <h2 class="section-title">Interactive Examples</h2>
+          
+          <!-- Main Display Area -->
+          <div class="main-display-container">
+            <!-- Loading Indicator for iframe -->
+            <div class="iframe-loader" id="iframeLoader">
+              <div class="loader-spinner"></div>
+              <div class="loader-text">Loading interactive demo...</div>
+            </div>
+            <iframe 
+              id="mainIframe" 
+              class="main-iframe"
+              src="http://localhost:8082/html/build/?playbackPath=http://localhost:8082/html/assets/viser/horsejump-high.viser&initDistanceScale=1&initHeightOffset=0.0">
+            </iframe>
+          </div>
+          
+          <!-- Thumbnail Gallery -->
+          <div class="thumbnail-gallery">
+            <div class="thumbnail-item active" 
+                 data-src="http://localhost:8082/html/build/?playbackPath=http://localhost:8082/html/assets/viser/horsejump-high.viser&initDistanceScale=1&initHeightOffset=0.0"
+                 onclick="switchIframe(this)">
+              <img src="assets/viser/horsejump-high.jpg" alt="Example 1" onerror="this.src='assets/placeholder.svg'">
+              <div class="thumbnail-label">Scene 1</div>
+            </div>
+            
+            <div class="thumbnail-item" 
+                 data-src="http://localhost:8082/html/build/?playbackPath=http://localhost:8082/html/assets/viser/car-roundabout.viser&initDistanceScale=1&initHeightOffset=0.0"
+                 onclick="switchIframe(this)">
+              <img src="assets/viser/car-roundabout.jpg" alt="Example 2" onerror="this.src='assets/placeholder.svg'">
+              <div class="thumbnail-label">Scene 2</div>
+            </div>
+            
+            <div class="thumbnail-item" 
+                 data-src="http://localhost:8082/html/build/?playbackPath=http://localhost:8082/html/assets/viser/breakdance.viser&initDistanceScale=1&initHeightOffset=0.0"
+                 onclick="switchIframe(this)">
+              <img src="assets/viser/breakdance.jpg" alt="Example 3" onerror="this.src='assets/placeholder.svg'">
+              <div class="thumbnail-label">Scene 3</div>
+            </div>
+            
+            <div class="thumbnail-item" 
+                 data-src="http://localhost:8082/html/build/?playbackPath=http://localhost:8082/html/assets/viser/dog.viser&initDistanceScale=1&initHeightOffset=0.0"
+                 onclick="switchIframe(this)">
+              <img src="assets/viser/dog.jpg" alt="Example 4" onerror="this.src='assets/placeholder.svg'">
+              <div class="thumbnail-label">Scene 4</div>
+            </div>
+            
+            <div class="thumbnail-item" 
+                 data-src="http://localhost:8082/html/build/?playbackPath=http://localhost:8082/html/assets/viser/drift-straight.viser&initDistanceScale=1&initHeightOffset=-0.05"
+                 onclick="switchIframe(this)">
+              <img src="assets/viser/drift-straight.jpg" alt="Example 5" onerror="this.src='assets/placeholder.svg'">
+              <div class="thumbnail-label">Scene 5</div>
+            </div>
+            
+            <div class="thumbnail-item" 
+                 data-src="http://localhost:8082/html/build/?playbackPath=http://localhost:8082/html/assets/viser/car-turn.viser&initDistanceScale=1&initHeightOffset=0.0"
+                 onclick="switchIframe(this)">
+              <img src="assets/viser/car-turn.jpg" alt="Example 6" onerror="this.src='assets/placeholder.svg'">
+              <div class="thumbnail-label">Scene 6</div>
+            </div>
+            
+            <div class="thumbnail-item" 
+                 data-src="http://localhost:8082/html/glb-viewer.html?src=http://localhost:8082/html/assets/glb/Colosseum.glb"
+                 onclick="switchIframe(this)">
+              <img src="assets/glb/Colosseum.jpg" alt="Example 7" onerror="this.src='assets/placeholder.svg'">
+              <div class="thumbnail-label">Scene 7</div>
+            </div>
+
+            <div class="thumbnail-item" 
+                  data-src="http://localhost:8082/html/glb-viewer.html?src=http://localhost:8082/html/assets/glb/spp_cc523.glb"
+                  onclick="switchIframe(this)">
+              <img src="assets/glb/spp_cc523.jpg" alt="Example 8" onerror="this.src='assets/placeholder.svg'">
+              <div class="thumbnail-label">Scene 8</div>
+            </div>
+
+            <div class="thumbnail-item" 
+                 data-src="http://localhost:8082/html/glb-viewer.html?src=http://localhost:8082/html/assets/glb/7s_heads.glb"
+                 onclick="switchIframe(this)">
+              <img src="assets/glb/7s_heads.jpg" alt="Example 9" onerror="this.src='assets/placeholder.svg'">
+              <div class="thumbnail-label">Scene 9</div>
+            </div>
+
+            <div class="thumbnail-item" 
+                 data-src="http://localhost:8082/html/glb-viewer.html?src=http://localhost:8082/html/assets/glb/dtu_118.glb"
+                 onclick="switchIframe(this)">
+              <img src="assets/glb/dtu_118.jpg" alt="Example 10" onerror="this.src='assets/placeholder.svg'">
+              <div class="thumbnail-label">Scene 10</div>
+            </div>
+            
+            <div class="thumbnail-item" 
+                 data-src="http://localhost:8082/html/glb-viewer.html?src=http://localhost:8082/html/assets/glb/im_5277.glb"
+                 onclick="switchIframe(this)">
+              <img src="assets/glb/im_5277.jpg" alt="Example 11" onerror="this.src='assets/placeholder.svg'">
+              <div class="thumbnail-label">Scene 11</div>
+            </div>
+
+            <div class="thumbnail-item" 
+                data-src="http://localhost:8082/html/glb-viewer.html?src=http://localhost:8082/html/assets/glb/im_thomas.glb"
+                onclick="switchIframe(this)">
+                <img src="assets/glb/im_thomas.jpg" alt="Example 12" onerror="this.src='assets/placeholder.svg'">
+                <div class="thumbnail-label">Scene 12</div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <!-- Analysis -->
+    <section id="analysis" class="analysis">
+        <div class="container">
+            <h2 class="section-title">Comparison</h2>
+            <div class="analysis-carousel">
+                <div class="carousel-container">
+                    <button class="carousel-btn prev-btn" onclick="changeAnalysis(-1)">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="carousel-content">
+                        <div class="analysis-slide active">
+                            <video muted autoplay="autoplay" loop="loop" width="100%" preload controls>
+                                <source src="assets/cmp/cmp_m_1.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class="analysis-slide">
+                            <video muted autoplay="autoplay" loop="loop" width="100%" preload controls>
+                                <source src="assets/cmp/cmp_b_1.mp4" type="video/mp4">
+                            </video> 
+                        </div>
+                    </div>
+                    <button class="carousel-btn next-btn" onclick="changeAnalysis(1)">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="carousel-indicators">
+                    <span class="indicator active" onclick="setAnalysis(0)"></span>
+                    <span class="indicator" onclick="setAnalysis(1)"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Citation -->
+    <section id="citation" class="citation">
+        <div class="container">
+            <h2 class="section-title">Citation</h2>
+            <div class="citation-box">
+                <pre><code>
+@article{depthanything3,
+  title={Depth Anything 3: recovering the visual space from any views},
+  author={Haotong Lin and Sili Chen and Jun Hao Liew and Donny Chen and Zhenyu Li and Guang Shi and Jiashi Feng and Bingyi Kang},
+  journal={arXiv preprint arXiv:XXXX.XXXXX},
+  year={2025}
+}</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Depth Anything 3. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
