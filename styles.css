@@ -420,8 +420,8 @@ section {
 /* Thumbnail gallery */
 .thumbnail-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -459,7 +459,7 @@ section {
 
 .thumbnail-item img {
     width: 100%;
-    height: 90px;
+    height: 110px;
     object-fit: cover;
     display: block;
     transition: transform 0.3s ease;
@@ -806,8 +806,8 @@ section {
     
     /* Responsive thumbnail gallery */
     .thumbnail-gallery {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 8px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
     }
     
     .thumbnail-item img {
