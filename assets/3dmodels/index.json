@@ -20,4 +20,9 @@
              "EVAL_eth3d__terrains",
              "EVAL_scannetpp__c4c04e6d6c",
              "EVAL_scannetpp__7831862f02",
-             "EVAL_scannetpp__cc5237fd77"] }
+             "EVAL_scannetpp__cc5237fd77",
+             "STATIC_minecraft3_img_depth.png",
+             "STATIC_demo8_img_depth.png",
+             "STATIC_27570847956_1934aa7d19_k_img.jpg",
+             "STATIC_aigc10_img_depth.png",
+             "STATIC_chicken_img_depth.png"] }
