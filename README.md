@@ -76,4 +76,4 @@ Simply upload all files to your web server. The page is self-contained and doesn
 
 ## License
 
-This project page is part of the Depth Anything 3 project. Please refer to the main project license for usage terms.
+This project page is part of the [Depth Anything 3](https://github.com/ByteDance-Seed/depth-anything-3) project. Please refer to the main project license for usage terms.
