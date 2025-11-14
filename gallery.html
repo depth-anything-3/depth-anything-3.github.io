@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -39,31 +39,29 @@
     .btn{ margin-left:auto; background:#fff; color:#1f2937; border:1px solid rgba(0,0,0,.12); border-radius:10px; padding:6px 10px; cursor:pointer; }
     .btn + .btn { margin-left:0; }
     /* .viewer-body{ display:grid; grid-template-columns: 1.4fr 1fr; gap:10px; padding:10px; height:100%; } */
-    /* 原本：grid-template-columns: 1.4fr 1fr; 改为上下布局 */
+    /* Original: grid-template-columns: 1.4fr 1fr; changed to top-bottom layout */
     .viewer-body {
     display: grid;
-    grid-template-rows: auto auto; /* 上下两块自适应 */
+    grid-template-rows: auto auto; /* Two adaptive blocks top and bottom */
     gap: 10px;
     padding: 10px;
     height: 100%;
-    overflow: auto; /* 让整块 viewer-body 可以滚动 */
+    overflow: auto; /* Allow the entire viewer-body to scroll */
     }
 
 
-
-    /* model-viewer 顶层可交互 */
+    /* model-viewer top-level interactive */
     /* .mv-box model-viewer { pointer-events: auto; } */
 
-    /* 若有自定义遮罩层，一律不拦截（按需放开） */
+    /* If there are custom overlay layers, they don't intercept (uncomment as needed) */
     /* .mv-box > *:not(model-viewer) { pointer-events: none; } */
 
-    /* overlay 背景接收点击，但内部 viewer 正常交互 */
+    /* overlay background receives clicks, but internal viewer interacts normally */
     /* .overlay { pointer-events: auto; }
     .viewer  { pointer-events: auto; } */
 
 
-
-    /* model-viewer box（基于你已有的 viewer 样式） */
+    /* model-viewer box (based on your existing viewer styles) */
     .mv-box { position: relative; width:100%; aspect-ratio: 1036 / 518; background-color:#fff; border:1px solid rgba(0,0,0,.1); border-radius:12px; overflow:hidden; }
     model-viewer { width:100%; height:100%; display:block; background-color:#fff; }
     /* .mv-badge { position:absolute; left:12px; bottom:12px; z-index:5; display:none; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.25); overflow:hidden; }
@@ -105,8 +103,8 @@
   <header>
     <div class="hdr-row">
       <h1>Depth Anything 3 Gallery</h1>
-      <input id="search" class="search" placeholder="搜索场景名…" />
-      <label class="ctl-btn" for="dirInput" id="dirLabel" style="display:none;">本地加载目录</label>
+      <input id="search" class="search" placeholder="Search scene name..." />
+      <label class="ctl-btn" for="dirInput" id="dirLabel" style="display:none;">Load Local Directory</label>
       <input id="dirInput" class="file-input" type="file" webkitdirectory directory multiple />
     </div>
   </header>
@@ -114,25 +112,25 @@
   <main>
     <div id="grid" class="grid"></div>
     <div class="pager">
-      <button id="prevBtn">← 上一页</button>
+      <button id="prevBtn">← Previous</button>
       <span id="pageInfo">1 / 1</span>
-      <button id="nextBtn">下一页 →</button>
+      <button id="nextBtn">Next →</button>
     </div>
   </main>
 
   <!-- Overlay viewer -->
-  <div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-label="3D 预览">
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-label="3D Preview">
     <div class="viewer">
       <div class="viewer-header">
         <div id="viewerTitle" class="chip">Loading…</div>
-        <!-- <button id="toggleView" class="btn" title="切换 3D / 资源">资源视图</button> -->
-        <button id="closeBtn" class="btn">关闭</button>
+        <!-- <button id="toggleView" class="btn" title="Switch 3D / Resources">Resource View</button> -->
+        <button id="closeBtn" class="btn">Close</button>
       </div>
       <div class="viewer-body">
         <div class="mv-box">
           <model-viewer id="mv"
             src=""
-            alt="3D 模型预览"
+            alt="3D Model Preview"
             ar
             camera-controls
             auto-rotate
@@ -140,21 +138,21 @@
             shadow-intensity="0.6"
             environment-image="neutral">
           </model-viewer>
-          <!-- 左下角角标（由 JS 控制显示/隐藏） -->
+          <!-- Bottom left corner badge (controlled by JS) -->
           <!-- <a id="badgeWrap" class="mv-badge" href="#" target="_blank" rel="noopener" aria-label="badge link">
             <img id="badgeImg" src="" alt="badge" />
           </a> -->
         </div>
         <div class="res-panel">
           <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div class="chip" style="max-width:none;">深度图预览</div>
-            <div class="chip" id="depthCount">0 张</div>
+            <div class="chip" style="max-width:none;">Depth Map Preview</div>
+            <div class="chip" id="depthCount">0 images</div>
           </div>
           <div id="resGrid" class="res-grid"></div>
           <div class="res-pager">
-            <button id="resPrev">← 上一页</button>
+            <button id="resPrev">← Previous</button>
             <span id="resInfo">1 / 1</span>
-            <button id="resNext">下一页 →</button>
+            <button id="resNext">Next →</button>
           </div>
         </div>
       </div>
@@ -164,14 +162,14 @@
   <footer style="text-align:center;padding:20px;color:#6b7280;font-size:12px;">© 2025 Depth Anything 3 Gallery</footer>
 
 <script>
-  // ---------------- 配置与常量 ----------------
-  const ROOT = 'assets/3dmodels/';    // 固定根目录
-  const PER_PAGE = 12;                // 画廊每页显示卡片数
-  const DEPTH_PER_PAGE = 2;           // overlay 中深度图每页 2 张
-  const BADGE_CLICKABLE = false;      // badge 是否可点击（false 时不阻挡拖拽）
+  // ---------------- Configuration and Constants ----------------
+  const ROOT = 'assets/3dmodels/';    // Fixed root directory
+  const PER_PAGE = 12;                // Number of cards displayed per page in gallery
+  const DEPTH_PER_PAGE = 2;           // Number of depth images per page in overlay
+  const BADGE_CLICKABLE = false;      // Whether badge is clickable (does not block dragging when false)
   const IMAGE_EXTS = new Set(['.png','.jpg','.jpeg','.webp','.bmp']);
 
-  // ---------------- 状态 ----------------
+  // ---------------- State ----------------
   let ITEMS = [];               // {id,title,model,thumbnail,depth_images}
   let filtered = [];
   let page = 1;
@@ -204,40 +202,40 @@
     dirLabel: document.getElementById('dirLabel'),
   };
 
-  // ---------------- 工具 ----------------
+  // ---------------- Utilities ----------------
   const extOf = (name) => {
     const i = name.lastIndexOf('.');
     return i>=0 ? name.slice(i).toLowerCase() : '';
   };
   function normalizeItemsFromManifest(list) {
-    // 根据场景名拼接固定路径
+    // Concatenate fixed paths based on scene names
     return (list || []).map(scene => {
       const id = scene;
       const base = ROOT + id + '/';
       const depthDir = base + 'depth_vis/';
-      // 深度图按 0000.jpg 连续编号，可按需调整数量上限
+      // Depth images are consecutively numbered as 0000.jpg, adjust the quantity limit as needed
       const depth_images = [];
       for (let k=0;k<999;k++){
         const fname = String(k).padStart(4,'0') + '.jpg';
-        // 不知道具体数量，这里先推断 URL，实际加载按需请求
+        // Don't know the specific quantity, infer URLs here, request on demand when actually loading
         depth_images.push(depthDir + fname);
       }
       return {
         id, title: id,
         model: base + 'scene.glb',
         thumbnail: base + 'scene.jpg',
-        depth_images, // 注意：若某些编号不存在，加载时会 404，不影响其它图展示
+        depth_images, // Note: If some numbers don't exist, loading will result in 404, which doesn't affect the display of other images
       };
     });
   }
 
-  // ---------------- 数据加载：方案 1（从 manifest）----------------
+  // ---------------- Data Loading: Method 1 (From manifest) ----------------
   async function tryLoadFromManifest() {
     try {
       const resp = await fetch(ROOT + 'index.json', {cache:'no-store'});
       if (!resp.ok) throw new Error('manifest not found');
       const j = await resp.json();
-      // 期望结构：{ "scenes": ["abc","def", ...] }
+      // Expected structure: { "scenes": ["abc","def", ...] }
       const scenes = j.scenes || [];
       if (!scenes.length) throw new Error('empty scenes');
       ITEMS = normalizeItemsFromManifest(scenes);
@@ -248,19 +246,19 @@
     }
   }
 
-  // ---------------- 数据加载：方案 2（本地目录选择）----------------
+  // ---------------- Data Loading: Method 2 (Local directory selection) ----------------
   function showLocalLoader() {
     els.dirLabel.style.display = '';
   }
   async function loadFromDirectory(fileList) {
-    // 解析 webkitRelativePath，构建场景
+    // Parse webkitRelativePath, build scenes
     const files = Array.from(fileList).filter(f => f instanceof File);
     const groups = new Map(); // scene -> { glb, jpg, depth: [] }
     for (const f of files) {
       const rel = f.webkitRelativePath || f.name;
-      // 期望结构：assets/3dmodels/{scene}/...
+      // Expected structure: assets/3dmodels/{scene}/...
       const segs = rel.split('/').filter(Boolean);
-      const idxRoot = segs.indexOf('assets') === -1 ? 0 : segs.indexOf('assets'); // 容忍选择根不同
+      const idxRoot = segs.indexOf('assets') === -1 ? 0 : segs.indexOf('assets'); // Tolerate different root selections
       const baseSegs = segs.slice(idxRoot);
       // assets/3dmodels/{scene}/xxx
       if (baseSegs[0] !== 'assets' || baseSegs[1] !== '3dmodels' || baseSegs.length < 4) continue;
@@ -290,7 +288,7 @@
     ITEMS = items.sort((a,b)=>a.id.localeCompare(b.id));
   }
 
-  // ---------------- Gallery 渲染 ----------------
+  // ---------------- Gallery Rendering ----------------
   function buildCard(it){
     const card = document.createElement('div');
     card.className = 'card';
@@ -331,12 +329,12 @@
 
   // ---------------- Overlay Viewer ----------------
 //   async function forceReloadModel(url) {
-//     const mv = els.mv; // 你的 <model-viewer> 引用
-//     // 1) 清空 src，释放旧上下文
+//     const mv = els.mv; // Your <model-viewer> reference
+//     // 1) Clear src, release old context
 //     mv.src = '';
-//     // 2) 等待一帧，让浏览器完成卸载
+//     // 2) Wait for one frame, let browser complete unloading
 //     await new Promise(requestAnimationFrame);
-//     // 3) 再设置新地址（同一个也行，等同强制 reload）
+//     // 3) Set new address again (even the same one, equivalent to forced reload)
 //     mv.src = url;
 //   }
 
@@ -344,18 +342,18 @@
     currentItem = it;
     depthPage = 1;
 
-    // 标题
+    // Title
     els.viewerTitle.textContent = it.title;
 
-    // 模型
+    // Model
     els.mv.src = it.model;
 
-//     // 显示 overlay 前设置初始状态
+//     // Set initial state before showing overlay
 //   els.overlay.classList.add('show');
-//   // 关键：强制重载 GLB
+//   // Key: Force reload GLB
 //   await forceReloadModel(it.model);
 
-    // // 角标（左下角）
+    // // Badge (bottom left corner)
     // if (it.thumbnail) {
     //   els.badgeImg.src = it.thumbnail;
     //   els.badgeWrap.style.display = 'block';
@@ -372,21 +370,21 @@
     //   els.badgeWrap.removeAttribute('href');
     // }
 
-    // 深度图
+    // Depth images
     renderDepthGrid();
 
-    // 显示 overlay
+    // Show overlay
     els.overlay.classList.add('show');
 
-    // 强制触发重绘 + resize
+    // Force redraw + resize
     requestAnimationFrame(() => {
-        // 方式 A：触发 resize 事件
+        // Method A: Trigger resize event
         window.dispatchEvent(new Event('resize'));
-        // 方式 B：切换属性让 model-viewer 重新计算
+        // Method B: Toggle attributes to make model-viewer recalculate
         const old = els.mv.getAttribute('exposure') || '1.0';
         els.mv.setAttribute('exposure', String(parseFloat(old) + 0.0001));
         els.mv.setAttribute('exposure', old);
-        // // 方式 C（有时有效）：toggle camera-controls
+        // // Method C (sometimes effective): toggle camera-controls
         // els.mv.removeAttribute('camera-controls');
         // els.mv.setAttribute('camera-controls', '');
     });
@@ -398,7 +396,7 @@
     const totalPages = Math.max(1, Math.ceil(total / DEPTH_PER_PAGE));
     depthPage = Math.min(Math.max(1, depthPage), totalPages);
 
-    els.depthCount.textContent = `${total} 张`;
+    els.depthCount.textContent = `${total} images`;
     els.resGrid.innerHTML = '';
 
     const start = (depthPage - 1) * DEPTH_PER_PAGE;
@@ -433,7 +431,7 @@
     els.mv.src = '';
     currentItem = null;
 
-    // 确保没有残留的遮挡层（如果你曾有 badge / 其他覆盖层）
+    // Ensure there are no remaining overlay layers (if you had badge/other overlays)
     const blockers = document.querySelectorAll('.mv-badge, .download-icon, .mask, .cover');
     blockers.forEach(el => {
         el.style.pointerEvents = 'none';
@@ -441,19 +439,19 @@
   }
 
 //   function toggleView(){
-//     // 隐藏/显示右侧资源面板
+//     // Hide/show right resource panel
 //     const panel = document.querySelector('.res-panel');
 //     const hidden = panel.hasAttribute('hidden');
 //     if (hidden) {
 //       panel.removeAttribute('hidden');
-//       els.toggleView.textContent = '资源视图';
+//       els.toggleView.textContent = 'Resource View';
 //     } else {
 //       panel.setAttribute('hidden','');
-//       els.toggleView.textContent = '仅 3D';
+//       els.toggleView.textContent = '3D Only';
 //     }
 //   }
 
-  // ---------------- 事件绑定 ----------------
+  // ---------------- Event Bindings ----------------
   els.prevBtn.onclick = ()=>{ page--; renderGallery(); };
   els.nextBtn.onclick = ()=>{ page++; renderGallery(); };
   els.search.oninput = ()=>{
@@ -475,17 +473,16 @@
     }
   });
 
-  // ---------------- 初始化：优先尝试从 manifest 加载 ----------------
+  // ---------------- Initialization: Try to load from manifest first ----------------
   (async function init(){
     const ok = await tryLoadFromManifest();
     if (!ok) {
-      // 提示用户可选择本地目录（Chrome/Edge/Safari 支持）
+      // Prompt user to select local directory (supported in Chrome/Edge/Safari)
       showLocalLoader();
     }
-    // 若 manifest 成功加载或以后从目录加载了 ITEMS，渲染画廊
+    // Render gallery if manifest loaded successfully or ITEMS loaded from directory later
     renderGallery();
   })();
 </script>
 </body>
 </html>
-
