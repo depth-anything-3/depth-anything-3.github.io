@@ -83,19 +83,19 @@
                 </div>
 
                 <div class="banner-links">
-                    <a href="https://arxiv.org/abs/2511.10647" target="_blank" class="link-btn">
+                    <a href="assets/da3_tech_report_2025.pdf" target="_blank" class="link-btn">
                         <i class="fas fa-file-pdf"></i> Tech Report
                     </a>
-                    <!-- <a href="https://promptda.github.io/assets/main_paper_with_supp.pdf" target="_blank" class="link-btn">
-                        <i class="fas fa-file-pdf"></i> Paper
-                    </a> -->
+                    <a href="https://arxiv.org/abs/2511.10647" target="_blank" class="link-btn">
+                        <i class="fas fa-file-alt"></i> arXiv
+                    </a>
                     <a href="https://huggingface.co/spaces/depth-anything/depth-anything-3" target="_blank" class="link-btn">
                         <i class="fas fa-rocket"></i> Demo
                     </a>
                     <a href="https://github.com/ByteDance-Seed/depth-anything-3" target="_blank" class="link-btn">
                         <i class="fab fa-github"></i> Code
                     </a>
-                    <a href="https://depth-anything-3.github.io/gallery.html" target="_blank" class="link-btn">
+                    <a href="/gallery.html" target="_blank" class="link-btn">
                         <i class="fas fa-images"></i> Gallery
                     </a>
                 </div>
@@ -193,13 +193,13 @@
                                     <div class="loader-spinner"></div>
                                     <div class="loader-text">Loading video...</div>
                                 </div>
-                                <video playsinline muted autoplay loop class="app-video lazy-video" preload="metadata" data-src="assets/slam_recon.mp4">
-                                    <source data-src="assets/slam_recon.mp4" type="video/mp4">
+                                <video playsinline muted autoplay loop class="app-video lazy-video" preload="metadata" data-src="assets/slam_demo.mp4">
+                                    <source data-src="assets/slam_demo.mp4" type="video/mp4">
                                     Your browser does not support video playback.
                                 </video>
                             </div>
                             <div class="application-info">
-                                <h3>SLAM for Large Scale Scenes</h3>
+                                <h3>SLAM for Large-Scale Scenes</h3>
                                 <p>
                                     Accurate visual geometry estimation improves SLAM performance. Quantitative results show that simply replacing VGGT in VGGT-Long with DA3 (DA3-Long) significantly reduces drift in large-scale environments, even better than COLMAP, which takes more 48 hours to complete.
                                 </p>
@@ -212,15 +212,15 @@
                                     <div class="loader-spinner"></div>
                                     <div class="loader-text">Loading video...</div>
                                 </div>
-                                <video playsinline muted autoplay loop class="app-video lazy-video" preload="metadata" data-src="assets/ff3dgs.mp4">
-                                    <source data-src="assets/ff3dgs.mp4" type="video/mp4">
+                                <video playsinline muted autoplay loop class="app-video lazy-video" preload="metadata" data-src="assets/gs.mp4">
+                                    <source data-src="assets/gs.mp4" type="video/mp4">
                                     Your browser does not support video playback.
                                 </video>
                             </div>
                             <div class="application-info">
-                                <h3>Feed-forward Gaussians Estimation</h3>
+                                <h3>Feed-Forward 3D Gaussians Estimation</h3>
                                 <p>
-                                    By freezing the entire backbone and training a DPT head on several datasets to predict 3DGS parameters, our model achieves very strong and generalizable novel view synthesis capability.
+                                    By freezing the entire backbone and training a DPT head to predict 3DGS parameters, our model achieves very strong and generalizable novel view synthesis capability.
                                 </p>
                             </div>
                         </div>
@@ -237,7 +237,7 @@
                                 </video>
                             </div>
                             <div class="application-info">
-                                <h3>Autonomous Driving Perception</h3>
+                                <h3>Spatial Perception from Multiple Cameras </h3>
                                 <p>Given several images of different viewpoints from a vehicle (even without overlap), DA3 estimates stable and fusible depth maps, enhancing autonomous vehicles' environmental understanding.</p>
                             </div>
                         </div>
@@ -347,14 +347,14 @@
             </div>
             
             <div class="thumbnail-item" 
-                 data-src="https://depth-anything-3.github.io/html/build/?playbackPath=https://depth-anything-3.github.io/html/assets/viser/drift-straight.viser&initDistanceScale=1&initHeightOffset=-0.05"
+                 data-src="https://depth-anything-3.github.io/build/?playbackPath=https://depth-anything-3.github.io/assets/viser/drift-straight.viser&initDistanceScale=1&initHeightOffset=-0.05"
                  onclick="switchIframe(this)">
               <img src="assets/viser/drift-straight.jpg" alt="Example 11" onerror="this.src='assets/placeholder.svg'">
               <div class="thumbnail-label">Scene 11</div>
             </div>
             
             <div class="thumbnail-item" 
-                 data-src="https://depth-anything-3.github.io/html/build/?playbackPath=https://depth-anything-3.github.io/html/assets/viser/car-turn.viser&initDistanceScale=1&initHeightOffset=0.0"
+                 data-src="https://depth-anything-3.github.io/build/?playbackPath=https://depth-anything-3.github.io/assets/viser/car-turn.viser&initDistanceScale=1&initHeightOffset=0.0"
                  onclick="switchIframe(this)">
               <img src="assets/viser/car-turn.jpg" alt="Example 12" onerror="this.src='assets/placeholder.svg'">
               <div class="thumbnail-label">Scene 12</div>
