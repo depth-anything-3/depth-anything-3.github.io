@@ -482,6 +482,110 @@ section {
     color: var(--accent-primary);
 }
 
+/* Awesome DA3 Projects styles */
+.projects-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.project-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.project-item {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+    border: 2px solid transparent;
+    background: var(--bg-primary);
+    user-select: none;
+}
+
+.project-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-primary);
+}
+
+.project-image-container {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.project-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.project-item:hover .project-image-container img {
+    transform: scale(1.05);
+}
+
+.project-description {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.3s ease;
+}
+
+.project-item:hover .project-description {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.project-name {
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    font-size: 0.9rem;
+}
+
+/* Responsive styles for projects gallery */
+@media (max-width: 768px) {
+    .projects-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .project-image-container {
+        height: 150px;
+    }
+    
+    .project-name {
+        padding: 8px;
+        font-size: 0.8rem;
+    }
+    
+    .project-description {
+        font-size: 0.75rem;
+        padding: 8px 10px;
+    }
+}
+
 .section-title {
     text-align: center;
     font-size: 2.5rem;
@@ -493,6 +597,27 @@ section {
     background-clip: text;
 }
 
+.section-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 90%;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+}
+
+.section-description a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.section-description a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--accent-primary);
+    opacity: 0.9;
+}
 .interactive-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -751,8 +876,16 @@ section {
     }
     
     .banner-links {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         align-items: center;
+        justify-content: center;
+    }
+    
+    .link-btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        margin-bottom: 10px;
     }
     
     .nav-links {
@@ -788,6 +921,7 @@ section {
     
     .carousel-container {
         flex-direction: column;
+        position: relative;
     }
     
     .carousel-btn {
@@ -863,6 +997,7 @@ section {
 /* 滚动条样式 */
 ::-webkit-scrollbar {
     width: 8px;
+    height: 4px;
 }
 
 ::-webkit-scrollbar-track {
